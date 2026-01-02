@@ -10,6 +10,7 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Entity(repositoryClass: CategorieRepository::class)]
 class Categorie
 {
+
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
@@ -58,6 +59,7 @@ class Categorie
     {
         if (!$this->formations->contains($formation)) {
             $this->formations->add($formation);
+            // Attention : vérifie si c'est addCategory ou setPlaylist selon ton entité
             $formation->addCategory($this);
         }
 
