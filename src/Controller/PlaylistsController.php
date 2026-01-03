@@ -46,7 +46,7 @@ class PlaylistsController extends AbstractController
         $this->playlistRepository = $playlistRepository;
         $this->categorieRepository = $categorieRepository;
         $this->formationRepository = $formationRepository;
-    }}
+    }
 
     /**
      * @Route("/playlists", name="playlists")
@@ -55,7 +55,7 @@ class PlaylistsController extends AbstractController
     #[Route('/playlists', name: 'playlists')]
     public function index(): Response 
     {
-        $playlists = $this->playlistRepository->findAllOrderByName('ASC');
+        $playlists = $this->playlistRepository->findAllOrderBy('name','ASC');
         $categories = $this->categorieRepository->findAll();
         return $this->render(self::PAGE_PLAYLISTS, [
                     'playlists' => $playlists,
@@ -67,7 +67,7 @@ class PlaylistsController extends AbstractController
     public function sort($champ, $ordre): Response 
     {
         if ($champ === "name") {
-            $playlists = $this->playlistRepository->findAllOrderByName($ordre);
+            $playlists = $this->playlistRepository->findAllOrderBy($champ,$ordre);
         } else {
             $playlists = $this->playlistRepository->findAll();
         }
@@ -99,7 +99,7 @@ class PlaylistsController extends AbstractController
         $playlist = $this->playlistRepository->find($id);
         $playlistCategories = $this->categorieRepository->findAllForOnePlaylist($id);
         $playlistFormations = $this->formationRepository->findAllForOnePlaylist($id);
-        return $this->render(self::PAGE_PLAYLISTS, [
+        return $this->render('pages/playlist.html.twig', [
                     'playlist' => $playlist,
                     'playlistcategories' => $playlistCategories,
                     'playlistformations' => $playlistFormations

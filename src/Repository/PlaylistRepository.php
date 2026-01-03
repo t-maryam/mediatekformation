@@ -30,19 +30,24 @@ class PlaylistRepository extends ServiceEntityRepository
     }
 
     /**
-     * Retourne toutes les playlists triées sur le nom de la playlist
+     * Retourne toutes les playlists triées sur le nom ou le nombre de formations
      * @param type $champ
      * @param type $ordre
      * @return Playlist[]
      */
-    public function findAllOrderByName($ordre): array
+    public function findAllOrderBy($champ, $ordre): array
     {
-        return $this->createQueryBuilder('p')
-                        ->leftjoin('p.formations', 'f')
-                        ->groupBy('p.id')
-                        ->orderBy('p.name', $ordre)
-                        ->getQuery()
-                        ->getResult();
+        $qb = $this->createQueryBuilder('p')
+            ->leftJoin('p.formations', 'f')
+            ->groupBy('p.id');
+
+        if ($champ == 'nbformations') {
+            $qb->orderBy('count(f)', $ordre);
+        } else {
+            $qb->orderBy('p.' . $champ, $ordre);
+        }
+
+        return $qb->getQuery()->getResult();
     }
 
     /**
