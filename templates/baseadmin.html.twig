@@ -1,0 +1,43 @@
+{% extends "base.html.twig" %}
+
+{% block title %}Administration{% endblock %}
+{% block stylesheets %}{% endblock %}
+
+{% block top %}
+    <div class="container">
+        <div class="text-left">
+            <img src="{{ app.request.getBasePath()~'/banniere.jpg' }}" alt="Bannière du site">
+        </div>
+        
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item">
+                        <a class="nav-link text-danger" href="{{ path('admin.formations') }}">Espace administrateur</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Playlists</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Catégories</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-secondary" href="{{ path('accueil') }}">Retour au site public</a>
+                    </li>                 
+                </ul>
+            </div>
+        </nav>        
+    </div>
+{% endblock %}
+
+{% block body %}{% endblock %}
+
+{% block footer %}
+    <div class="container text-center">
+        <footer>
+            <hr>
+            <p><small><em>Espace Administrateur - MediaTek86</em></small></p>
+        </footer>
+    </div>
+{% endblock %}
+{% block javascripts %}{% endblock %}

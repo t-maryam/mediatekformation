@@ -1,0 +1,72 @@
+{% extends "baseadmin.html.twig" %}
+
+{% block body %}
+<div class="container mt-4">
+    <h2 class="mb-4 text-primary">
+        {% if formation.id %}
+            Modifier une formation
+        {% else %}
+            Ajouter une formation
+        {% endif %}
+    </h2>
+    
+    {{ form_start(formformation) }}
+    
+    <div class="row">
+        <div class="col-md-6">
+            <div class="mb-3">
+                {{ form_label(formformation.title) }}
+                {{ form_widget(formformation.title) }}
+                <div class="text-danger">{{ form_errors(formformation.title) }}</div>
+            </div>
+
+            <div class="mb-3">
+                {{ form_label(formformation.publishedAt) }}
+                {{ form_widget(formformation.publishedAt) }}
+                <div class="text-danger">{{ form_errors(formformation.publishedAt) }}</div>
+            </div>
+
+            <div class="mb-3">
+                {{ form_label(formformation.playlist) }}
+                {{ form_widget(formformation.playlist) }}
+                <div class="text-danger">{{ form_errors(formformation.playlist) }}</div>
+            </div>
+
+            <div class="mb-3">
+                {{ form_label(formformation.videoId) }}
+                {{ form_widget(formformation.videoId) }}
+                <div class="text-danger">{{ form_errors(formformation.videoId) }}</div>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="mb-3">
+                <label class="form-label">Catégories</label>
+                <div class="border p-2 rounded" style="max-height: 150px; overflow-y: auto;">
+                    {% for category in formformation.categories %}
+                        <div class="form-check form-check-inline">
+                            {{ form_widget(category, {'attr': {'class': 'form-check-input'}}) }}
+                            {{ form_label(category, null, {'label_attr': {'class': 'form-check-label', 'style': 'margin-right: 10px;'}}) }}
+                        </div>
+                    {% endfor %}
+                </div>
+                <div class="text-danger">{{ form_errors(formformation.categories) }}</div>
+            </div>
+
+            <div class="mb-3">
+                {{ form_label(formformation.description) }}
+                {{ form_widget(formformation.description) }}
+                <div class="text-danger">{{ form_errors(formformation.description) }}</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mt-3">
+        <div class="col">
+            {{ form_widget(formformation.submit) }}
+        </div>
+    </div>
+
+    {{ form_end(formformation) }}
+</div>
+{% endblock %}
