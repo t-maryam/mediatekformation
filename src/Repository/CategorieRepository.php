@@ -11,29 +11,27 @@ use Doctrine\Persistence\ManagerRegistry;
  */
 class CategorieRepository extends ServiceEntityRepository
 {
-
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Categorie::class);
     }
 
-    public function add(Categorie $entity): void
+    public function add(Categorie $entity, bool $flush = false): void
     {
         $this->getEntityManager()->persist($entity);
-        $this->getEntityManager()->flush();
+        if ($flush) {
+            $this->getEntityManager()->flush();
+        }
     }
 
-    public function remove(Categorie $entity): void
+    public function remove(Categorie $entity, bool $flush = false): void
     {
         $this->getEntityManager()->remove($entity);
-        $this->getEntityManager()->flush();
+        if ($flush) {
+            $this->getEntityManager()->flush();
+        }
     }
 
-    /**
-     * Retourne la liste des catégories des formations d'une playlist
-     * @param type $idPlaylist
-     * @return array
-     */
     public function findAllForOnePlaylist($idPlaylist): array
     {
         return $this->createQueryBuilder('c')

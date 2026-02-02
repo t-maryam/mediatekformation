@@ -11,22 +11,33 @@ use Doctrine\Persistence\ManagerRegistry;
  */
 class PlaylistRepository extends ServiceEntityRepository
 {
-
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Playlist::class);
     }
 
-    public function add(Playlist $entity): void
+    /**
+     * Ajoute une playlist (avec option flush)
+     */
+    public function add(Playlist $entity, bool $flush = false): void
     {
         $this->getEntityManager()->persist($entity);
-        $this->getEntityManager()->flush();
+
+        if ($flush) {
+            $this->getEntityManager()->flush();
+        }
     }
 
-    public function remove(Playlist $entity): void
+    /**
+     * Supprime une playlist (avec option flush)
+     */
+    public function remove(Playlist $entity, bool $flush = false): void
     {
         $this->getEntityManager()->remove($entity);
-        $this->getEntityManager()->flush();
+
+        if ($flush) {
+            $this->getEntityManager()->flush();
+        }
     }
 
     /**
@@ -61,27 +72,29 @@ class PlaylistRepository extends ServiceEntityRepository
     public function findByContainValue($champ, $valeur, $table = ""): array
     {
         if ($valeur == "") {
-            return $this->findAllOrderByName('ASC');
+            // CORRECTION : findAllOrderBy au lieu de findAllOrderByName
+            return $this->findAllOrderBy('name', 'ASC');
         }
+
         if ($table == "") {
             return $this->createQueryBuilder('p')
-                            ->leftjoin('p.formations', 'f')
-                            ->where('p.' . $champ . ' LIKE :valeur')
-                            ->setParameter('valeur', '%' . $valeur . '%')
-                            ->groupBy('p.id')
-                            ->orderBy('p.name', 'ASC')
-                            ->getQuery()
-                            ->getResult();
+                ->leftJoin('p.formations', 'f')
+                ->where('p.' . $champ . ' LIKE :valeur')
+                ->setParameter('valeur', '%' . $valeur . '%')
+                ->groupBy('p.id')
+                ->orderBy('p.name', 'ASC')
+                ->getQuery()
+                ->getResult();
         } else {
             return $this->createQueryBuilder('p')
-                            ->leftjoin('p.formations', 'f')
-                            ->leftjoin('f.categories', 'c')
-                            ->where('c.' . $champ . ' LIKE :valeur')
-                            ->setParameter('valeur', '%' . $valeur . '%')
-                            ->groupBy('p.id')
-                            ->orderBy('p.name', 'ASC')
-                            ->getQuery()
-                            ->getResult();
+                ->leftJoin('p.formations', 'f')
+                ->leftJoin('f.categories', 'c')
+                ->where('c.' . $champ . ' LIKE :valeur')
+                ->setParameter('valeur', '%' . $valeur . '%')
+                ->groupBy('p.id')
+                ->orderBy('p.name', 'ASC')
+                ->getQuery()
+                ->getResult();
         }
     }
 }

@@ -1,0 +1,61 @@
+{% extends "baseadmin.html.twig" %}
+
+{% block body %}
+<div class="container mt-4">
+    <h2 class="mb-4">Gestion des catégories</h2>
+
+    {% for message in app.flashes('success') %}
+        <div class="alert alert-success">{{ message }}</div>
+    {% endfor %}
+    {% for message in app.flashes('danger') %}
+        <div class="alert alert-danger">{{ message }}</div>
+    {% endfor %}
+
+    <div class="row">
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-header bg-info text-white">
+                    <strong>Ajouter une catégorie</strong>
+                </div>
+                <div class="card-body">
+                    {{ form_start(formcategorie) }}
+                    
+                    <div class="mb-3">
+                        {{ form_label(formcategorie.name) }}
+                        {{ form_widget(formcategorie.name) }}
+                        <div class="text-danger">{{ form_errors(formcategorie.name) }}</div>
+                    </div>
+
+                    {{ form_widget(formcategorie.submit) }}
+                    {{ form_end(formcategorie) }}
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-8">
+            <table class="table table-striped table-hover">
+                <thead>
+                    <tr>
+                        <th>Nom de la catégorie</th>
+                        <th class="text-center">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for categorie in categories %}
+                        <tr class="align-middle">
+                            <td>{{ categorie.name }}</td>
+                            <td class="text-center">
+                                <a href="{{ path('admin.categorie.suppr', {id: categorie.id, '_token': csrf_token('delete' ~ categorie.id)}) }}" 
+                                   class="btn btn-danger btn-sm" 
+                                   onclick="return confirm('Etes-vous sûr de vouloir supprimer la catégorie {{ categorie.name }} ?')">
+                                   Supprimer
+                                </a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}
