@@ -1,0 +1,27 @@
+name: Déploiement Continu Mediatek
+
+on:
+  push:
+    branches:
+      - main  # Ou 'master' selon le nom de ta branche principale
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 🚚 Récupération du code
+        uses: actions/checkout@v3
+
+      - name: 🚀 Déploiement par FTP
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.4
+        with:
+          server: ${{ secrets.FTP_SERVER }}
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          local-dir: ./
+          server-dir: ./public_html/
+          exclude: |
+            **/.git*
+            **/node_modules/**
+            **/var/cache/**
+            .env
