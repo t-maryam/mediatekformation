@@ -3,7 +3,7 @@ name: Déploiement Continu Mediatek
 on:
   push:
     branches:
-      - main  # Ou 'master' selon le nom de ta branche principale
+      - master
 
 jobs:
   deploy:
