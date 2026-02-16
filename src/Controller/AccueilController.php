@@ -8,9 +8,9 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * Description of AccueilController
+ * Gestion de la page d'accueil et des pages d'informations générales
  *
- * @author emds
+ * @package App\Controller
  */
 class AccueilController extends AbstractController
 {
@@ -21,6 +21,7 @@ class AccueilController extends AbstractController
     private $repository;
 
     /**
+     * Constructeur du contrôleur pour injecter le repository
      * @param FormationRepository $repository
      */
     public function __construct(FormationRepository $repository)
@@ -28,6 +29,10 @@ class AccueilController extends AbstractController
         $this->repository = $repository;
     }
 
+    /**
+     * Affiche les dernières formations sur la page d'accueil
+     * @return Response
+     */
     #[Route('/', name: 'accueil')]
     public function index(): Response
     {
@@ -37,6 +42,10 @@ class AccueilController extends AbstractController
         ]);
     }
 
+    /**
+     * Affiche la page des conditions générales d'utilisation (CGU)
+     * @return Response
+     */
     #[Route('/cgu', name: 'cgu')]
     public function cgu(): Response
     {

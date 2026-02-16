@@ -7,17 +7,27 @@ use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
+ * Repository gérant les entités Playlist
+ *
  * @extends ServiceEntityRepository<Playlist>
+ * @package App\Repository
  */
 class PlaylistRepository extends ServiceEntityRepository
 {
+    /**
+     * Constructeur du repository
+     * @param ManagerRegistry $registry
+     */
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Playlist::class);
     }
 
     /**
-     * Ajoute une playlist (avec option flush)
+     * Ajoute une playlist à la base de données
+     * @param Playlist $entity
+     * @param bool $flush (optionnel) vrai pour valider immédiatement la transaction
+     * @return void
      */
     public function add(Playlist $entity, bool $flush = false): void
     {
@@ -29,7 +39,10 @@ class PlaylistRepository extends ServiceEntityRepository
     }
 
     /**
-     * Supprime une playlist (avec option flush)
+     * Supprime une playlist de la base de données
+     * @param Playlist $entity
+     * @param bool $flush (optionnel) vrai pour valider immédiatement la transaction
+     * @return void
      */
     public function remove(Playlist $entity, bool $flush = false): void
     {
@@ -42,8 +55,8 @@ class PlaylistRepository extends ServiceEntityRepository
 
     /**
      * Retourne toutes les playlists triées sur le nom ou le nombre de formations
-     * @param type $champ
-     * @param type $ordre
+     * @param string $champ
+     * @param string $ordre
      * @return Playlist[]
      */
     public function findAllOrderBy($champ, $ordre): array
@@ -62,11 +75,11 @@ class PlaylistRepository extends ServiceEntityRepository
     }
 
     /**
-     * Enregistrements dont un champ contient une valeur
+     * Retourne les enregistrements dont un champ contient une valeur
      * ou tous les enregistrements si la valeur est vide
-     * @param type $champ
-     * @param type $valeur
-     * @param type $table si $champ dans une autre table
+     * @param string $champ
+     * @param string $valeur
+     * @param string $table (optionnel) si le champ est dans une autre table
      * @return Playlist[]
      */
     public function findByContainValue($champ, $valeur, $table = ""): array

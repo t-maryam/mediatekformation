@@ -11,33 +11,39 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * Description of PlaylistsController
+ * Contrôleur gérant l'affichage des playlists côté public
  *
- * @author emds
+ * @package App\Controller
  */
 class PlaylistsController extends AbstractController 
 {
 
     /**
-     *
      * @var PlaylistRepository
      */
     private $playlistRepository;
 
     /**
-     *
      * @var FormationRepository
      */
     private $formationRepository;
 
     /**
-     *
      * @var CategorieRepository
      */
     private $categorieRepository;
 
+    /**
+     * Chemin vers le template de la page des playlists
+     */
     private const PAGE_PLAYLISTS = "pages/playlists.html.twig";
 
+    /**
+     * Constructeur du contrôleur pour injecter les repositories
+     * @param PlaylistRepository $playlistRepository
+     * @param CategorieRepository $categorieRepository
+     * @param FormationRepository $formationRepository
+     */
     public function __construct(
         PlaylistRepository $playlistRepository,
         CategorieRepository $categorieRepository,
@@ -49,7 +55,7 @@ class PlaylistsController extends AbstractController
     }
 
     /**
-     * @Route("/playlists", name="playlists")
+     * Affiche la liste complète des playlists
      * @return Response
      */
     #[Route('/playlists', name: 'playlists')]
@@ -63,6 +69,12 @@ class PlaylistsController extends AbstractController
         ]);
     }
 
+    /**
+     * Gère le tri des playlists
+     * @param string $champ
+     * @param string $ordre
+     * @return Response
+     */
     #[Route('/playlists/tri/{champ}/{ordre}', name: 'playlists.sort')]
     public function sort($champ, $ordre): Response 
     {
@@ -79,6 +91,13 @@ class PlaylistsController extends AbstractController
         ]);
     }
 
+    /**
+     * Gère la recherche filtrée des playlists
+     * @param string $champ
+     * @param Request $request
+     * @param string $table
+     * @return Response
+     */
     #[Route('/playlists/recherche/{champ}/{table}', name: 'playlists.findallcontain')]
     public function findAllContain($champ, Request $request, $table = ""): Response 
     {
@@ -93,6 +112,11 @@ class PlaylistsController extends AbstractController
         ]);
     }
 
+    /**
+     * Affiche le détail d'une playlist spécifique
+     * @param int $id
+     * @return Response
+     */
     #[Route('/playlists/playlist/{id}', name: 'playlists.showone')]
     public function showOne($id): Response 
     {

@@ -10,17 +10,31 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
+/**
+ * Contrôleur gérant la partie administration des catégories
+ * *
+ * @package App\Controller
+ */
 class AdminCategoriesController extends AbstractController
 {
+    /**
+     * @var CategorieRepository
+     */
     private $categorieRepository;
 
+    /**
+     * Constructeur du contrôleur pour injecter le repository
+     * @param CategorieRepository $categorieRepository
+     */
     public function __construct(CategorieRepository $categorieRepository)
     {
         $this->categorieRepository = $categorieRepository;
     }
 
     /**
-     * Page unique : Liste des catégories + Ajout
+     * Affiche la liste des catégories et gère l'ajout d'une nouvelle catégorie
+     * @param Request $request
+     * @return Response
      */
     #[Route('/admin/categories', name: 'admin.categories')]
     public function index(Request $request): Response
@@ -54,7 +68,10 @@ class AdminCategoriesController extends AbstractController
     }
 
     /**
-     * Suppression d'une catégorie
+     * Gère la suppression d'une catégorie après vérification des dépendances
+     * @param int $id
+     * @param Request $request
+     * @return Response
      */
     #[Route('/admin/categories/suppr/{id}', name: 'admin.categorie.suppr')]
     public function suppr(int $id, Request $request): Response

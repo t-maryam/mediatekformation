@@ -7,13 +7,23 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
+/**
+ * Contrôleur gérant l'authentification des utilisateurs (Connexion / Déconnexion)
+ *
+ * @package App\Controller
+ */
 class SecurityController extends AbstractController
 {
+    /**
+     * Gère l'affichage et le traitement du formulaire de connexion
+     * @param AuthenticationUtils $authenticationUtils
+     * @return Response
+     */
     #[Route(path: '/login', name: 'app_login')]
     public function login(AuthenticationUtils $authenticationUtils): Response
     {
         // if ($this->getUser()) {
-        //     return $this->redirectToRoute('target_path');
+        //      return $this->redirectToRoute('target_path');
         // }
 
         // get the login error if there is one
@@ -24,6 +34,11 @@ class SecurityController extends AbstractController
         return $this->render('security/login.html.twig', ['last_username' => $lastUsername, 'error' => $error]);
     }
 
+    /**
+     * Gère la déconnexion de l'utilisateur (intercepté par le firewall)
+     * @return void
+     * @throws \LogicException
+     */
     #[Route(path: '/logout', name: 'app_logout')]
     public function logout(): void
     {

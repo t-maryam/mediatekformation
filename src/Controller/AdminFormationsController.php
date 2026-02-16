@@ -11,17 +11,39 @@ use Symfony\Component\Routing\Annotation\Route;
 use App\Entity\Formation;
 use App\Form\FormationType;
 
+/**
+ * Contrôleur gérant la partie administration des formations
+ *
+
+ * @package App\Controller
+ */
 class AdminFormationsController extends AbstractController
 {
+    /**
+     * @var FormationRepository
+     */
     private $formationRepository;
+
+    /**
+     * @var CategorieRepository
+     */
     private $categorieRepository;
 
+    /**
+     * Constructeur du contrôleur pour injecter les repositories
+     * @param FormationRepository $formationRepository
+     * @param CategorieRepository $categorieRepository
+     */
     public function __construct(FormationRepository $formationRepository, CategorieRepository $categorieRepository)
     {
         $this->formationRepository = $formationRepository;
         $this->categorieRepository = $categorieRepository;
     }
 
+    /**
+     * Affiche la liste des formations pour l'administration
+     * @return Response
+     */
     #[Route('/admin', name: 'admin.formations')]
     public function index(): Response
     {
@@ -33,6 +55,13 @@ class AdminFormationsController extends AbstractController
         ]);
     }
 
+    /**
+     * Gère le tri des formations dans la liste administrative
+     * @param string $champ
+     * @param string $ordre
+     * @param string $table
+     * @return Response
+     */
     #[Route('/admin/tri/{champ}/{ordre}/{table}', name: 'admin.formations.sort')]
     public function sort($champ, $ordre, $table=""): Response
     {
@@ -44,6 +73,13 @@ class AdminFormationsController extends AbstractController
         ]);
     }
 
+    /**
+     * Gère la recherche filtrée des formations pour l'administration
+     * @param string $champ
+     * @param Request $request
+     * @param string $table
+     * @return Response
+     */
     #[Route('/admin/recherche/{champ}/{table}', name: 'admin.formations.findallcontain')]
     public function findAllContain($champ, Request $request, $table = ""): Response
     {
@@ -59,7 +95,10 @@ class AdminFormationsController extends AbstractController
     }
     
     /**
-     * @Route("/admin/suppr/{id}", name="admin.formation.suppr")
+     * Supprime une formation via son identifiant
+     * @param int $id
+     * @param Request $request
+     * @return Response
      */
     #[Route('/admin/suppr/{id}', name: 'admin.formation.suppr')]
     public function suppr(int $id, Request $request): Response
@@ -74,8 +113,10 @@ class AdminFormationsController extends AbstractController
         return $this->redirectToRoute('admin.formations');
     }
     
-   /**
-     * @Route("/admin/ajout", name="admin.formation.ajout")
+    /**
+     * Gère le formulaire d'ajout d'une nouvelle formation
+     * @param Request $request
+     * @return Response
      */
     #[Route('/admin/ajout', name: 'admin.formation.ajout')]
     public function ajout(Request $request): Response
@@ -89,7 +130,6 @@ class AdminFormationsController extends AbstractController
             return $this->redirectToRoute('admin.formations');
         }
 
-        
         return $this->render('admin/admin.formation.edit.html.twig', [
             'formformation' => $form->createView(),
             'formation' => $formation 
@@ -97,7 +137,10 @@ class AdminFormationsController extends AbstractController
     }
 
     /**
-     * @Route("/admin/edit/{id}", name="admin.formation.edit")
+     * Gère le formulaire de modification d'une formation existante
+     * @param int $id
+     * @param Request $request
+     * @return Response
      */
     #[Route('/admin/edit/{id}', name: 'admin.formation.edit')]
     public function edit(int $id, Request $request): Response
